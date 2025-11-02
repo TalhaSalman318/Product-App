@@ -1,0 +1,40 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/product_provider.dart';
+
+class ProductsScreen extends StatelessWidget {
+  const ProductsScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = Provider.of<ProductProvider>(context);
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Products")),
+      body: Center(
+        child: provider.isLoading
+            ? const CircularProgressIndicator()
+            : provider.errorMessage != null
+            ? Text(provider.errorMessage!)
+            : provider.productModel == null
+            ? const Text("No Data")
+            : ListView.builder(
+                itemCount: provider.productModel!.products.length,
+                itemBuilder: (context, index) {
+                  final item = provider.productModel!.products[index];
+                  return ListTile(
+                    title: Text(item.title),
+                    subtitle: Text(item.category.toString()),
+                    leading: Image.network(item.thumbnail, width: 50),
+                    trailing: Text('\$${item.price}'),
+                  );
+                },
+              ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => provider.loadProducts(), // 🔥 load API
+        child: const Icon(Icons.refresh),
+      ),
+    );
+  }
+}
