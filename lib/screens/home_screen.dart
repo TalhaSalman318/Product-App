@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:product_app/widgets/product_card.dart';
 import 'package:provider/provider.dart';
 import '../provider/product_provider.dart';
 
-class ProductsScreen extends StatelessWidget {
-  const ProductsScreen({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,18 +19,7 @@ class ProductsScreen extends StatelessWidget {
             ? Text(provider.errorMessage!)
             : provider.productModel == null
             ? const Text("No Data")
-            : ListView.builder(
-                itemCount: provider.productModel!.products.length,
-                itemBuilder: (context, index) {
-                  final item = provider.productModel!.products[index];
-                  return ListTile(
-                    title: Text(item.title),
-                    subtitle: Text(item.category.toString()),
-                    leading: Image.network(item.thumbnail, width: 50),
-                    trailing: Text('\$${item.price}'),
-                  );
-                },
-              ),
+            : ProductCard(),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => provider.loadProducts(), // 🔥 load API
