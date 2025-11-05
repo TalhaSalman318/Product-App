@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:product_app/provider/cart_provider.dart';
 import 'package:product_app/provider/nav_bar_provider.dart';
 import 'package:product_app/provider/product_provider.dart';
 import 'package:product_app/screens/home_screen.dart';
@@ -12,6 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => NavBarProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: const MyApp(),
     ),
