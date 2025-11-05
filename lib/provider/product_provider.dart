@@ -5,7 +5,7 @@ import '../repository/product_repository.dart';
 class ProductProvider extends ChangeNotifier {
   final ProductRepository _repo = ProductRepository();
   bool isLoading = false;
-  ProductModel? productModel;
+  ProductModel? product;
   String? errorMessage;
 
   Future<void> loadProducts() async {
@@ -13,7 +13,7 @@ class ProductProvider extends ChangeNotifier {
       isLoading = true;
       notifyListeners();
 
-      productModel = await _repo.fetchProducts();
+      product = await _repo.fetchProducts();
 
       isLoading = false;
       notifyListeners();
@@ -22,5 +22,13 @@ class ProductProvider extends ChangeNotifier {
       errorMessage = e.toString();
       notifyListeners();
     }
+  }
+
+  // detail selected product
+  Product? selectedProduct;
+
+  void selectProduct(Product product) {
+    selectedProduct = product;
+    notifyListeners();
   }
 }

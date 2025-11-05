@@ -17,7 +17,7 @@ class HomeScreen extends StatelessWidget {
             ? const CircularProgressIndicator()
             : provider.errorMessage != null
             ? Text(provider.errorMessage!)
-            : provider.productModel == null
+            : provider.product == null
             ? const Text("No Data")
             : ProductCard(),
       ),

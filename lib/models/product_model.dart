@@ -21,6 +21,8 @@ class ProductModel {
       limit: json['limit'] ?? 0,
     );
   }
+
+  get length => null;
 }
 
 class Product {
