@@ -15,7 +15,7 @@ class CategoryChip extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         child: Text(
-          category,
+          category, // ✅ sirf category ka naam
           style: const TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w500,
@@ -27,8 +27,7 @@ class CategoryChip extends StatelessWidget {
   }
 }
 
-// -----------------------------------------------------------------------
-
+/// ------------------- HORIZONTAL CATEGORY LIST -------------------
 class CategoryListView extends StatelessWidget {
   const CategoryListView({super.key});
 
@@ -36,23 +35,22 @@ class CategoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final provider = Provider.of<ProductProvider>(context);
 
-    final categories =
-        provider.product?.products
-            .map((e) => e.category.toString())
-            .toSet()
-            .toList() ??
-        [];
+    // 🔹 Unique categories, extra "Category: " remove karke
+    final categories = provider.product?.products
+        .map((e) => e.category.toString().replaceAll("Category: ", ""))
+        .toSet() // ✅ unique categories
+        .toList();
 
     return SizedBox(
-      height: 70, // proper height
+      height: 70,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        itemCount: categories.length,
+        itemCount: categories?.length,
         itemBuilder: (context, index) {
           return Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: CategoryChip(category: categories[index]),
+            child: CategoryChip(category: categories?[index] ?? ''),
           );
         },
       ),
