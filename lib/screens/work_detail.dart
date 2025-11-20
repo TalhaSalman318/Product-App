@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:product_app/provider/cart_provider.dart';
+import 'package:product_app/provider/favourite_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/product_provider.dart';
 
@@ -185,25 +186,57 @@ class ProductDetailScreen extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: 12),
+
                       Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Added to Favourites ❤️'),
-                                duration: Duration(seconds: 1),
+                        child: Consumer<FavouriteProvider>(
+                          builder: (context, favProvider, child) {
+                            final isFav = favProvider.isFavourite(product);
+
+                            return OutlinedButton.icon(
+                              onPressed: () {
+                                if (!isFav) {
+                                  favProvider.addToFavourites(product);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Added to Favourites ❤️'),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                } else {
+                                  favProvider.removeFromFavourites(product);
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        'Removed from Favourites 💔',
+                                      ),
+                                      duration: Duration(seconds: 1),
+                                    ),
+                                  );
+                                }
+                              },
+                              icon: Icon(
+                                isFav ? Icons.favorite : Icons.favorite_border,
+                                color: isFav ? Colors.red : Colors.green,
+                              ),
+                              label: Text(
+                                isFav ? 'Liked' : 'Favourite',
+                                style: TextStyle(
+                                  color: isFav ? Colors.red : Colors.green,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 14,
+                                ),
+                                side: BorderSide(
+                                  color: isFav ? Colors.red : Colors.green,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
                             );
                           },
-                          icon: const Icon(Icons.favorite_border),
-                          label: const Text('Favourite'),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            side: const BorderSide(color: Colors.green),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
                         ),
                       ),
                     ],
